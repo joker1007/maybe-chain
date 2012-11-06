@@ -18,7 +18,19 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+m1 = "a".to_maybe.upcase.gsub(/A/, "B")
+
+maybe(m1) do |str|
+  puts str
+end
+
+m2 = nil.to_maybe.upcase.gsub(/A/, "B")
+
+maybe(m2) do |str|
+  puts str # No Execute
+end
+```
 
 ## Contributing
 
