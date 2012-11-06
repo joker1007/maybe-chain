@@ -4,9 +4,9 @@ require File.expand_path('../lib/maybe-chain/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["joker1007"]
   gem.email         = ["kakyoin.hierophant@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{In method chain, This gem makes failure more graceful }
+  gem.summary       = %q{In method chain, This gem makes failure more graceful }
+  gem.homepage      = "https://github.com/joker1007/maybe-chain"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
