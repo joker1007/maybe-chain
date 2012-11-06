@@ -56,9 +56,11 @@ module MaybeChain
   end
 
   module KernelExtend
-    def maybe(maybe_wrapper, &block)
+    def maybe(maybe_wrapper, default = nil, &block)
       if maybe_wrapper.just?
         block.call(maybe_wrapper.value)
+      elsif default
+        block.call(default)
       end
     end
   end

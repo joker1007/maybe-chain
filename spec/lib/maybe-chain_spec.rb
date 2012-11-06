@@ -33,9 +33,16 @@ describe MaybeChain do
 
     context "maybe is nothing" do
       let(:maybe_obj) { nil.to_maybe.upcase }
-      it "execute block" do
+      it "no execute block" do
         i = 0
         expect { maybe(maybe_obj) {i += 1} }.not_to change {i}
+      end
+
+      context "with default value" do
+        it "execute block" do
+          i = 0
+          expect { maybe(maybe_obj, "a") {i += 1} }.to change {i}.by(1)
+        end
       end
     end
   end
