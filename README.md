@@ -22,13 +22,17 @@ Or install it yourself as:
 m1 = "a".to_maybe.upcase.gsub(/A/, "B")
 
 maybe(m1) do |str|
-  puts str
+  puts str # => a
 end
 
 m2 = nil.to_maybe.upcase.gsub(/A/, "B")
 
 maybe(m2) do |str|
   puts str # No Execute
+end
+
+maybe(m2, "a") do |str|
+  puts str # => a
 end
 ```
 
