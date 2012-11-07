@@ -1,4 +1,4 @@
-# Maybe::Chain
+# maybe-chain
 
 ## Installation
 
@@ -20,7 +20,7 @@ Or install it yourself as:
 m1 = "a".to_maybe.upcase.gsub(/A/, "B")
 
 maybe(m1) do |str|
-  puts str # => a
+  puts str # => B
 end
 
 m2 = nil.to_maybe.upcase.gsub(/A/, "B")
