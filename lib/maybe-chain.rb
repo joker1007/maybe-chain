@@ -26,12 +26,12 @@ module MaybeChain
 
     def method_missing(m, *args, &block)
       if nothing?
-        self.__getobj__.__send__(m, *args, &block)
+        self.__getobj__.__send__(m, @rescuables, &block)
       else
-        MaybeWrapper.new(super)
+        MaybeWrapper.new(super, @rescuables)
       end
     rescue *@rescuables
-      MaybeWrapper.new(Nothing.instance)
+      MaybeWrapper.new(Nothing.instance, @rescuables)
     end
 
     def nothing?
@@ -55,7 +55,8 @@ module MaybeChain
     include Singleton
 
     def method_missing(method, *args, &block)
-      MaybeWrapper.new(self)
+      rescuables = args.first || []
+      MaybeWrapper.new(self, rescuables)
     end
   end
 

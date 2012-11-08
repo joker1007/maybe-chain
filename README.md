@@ -32,6 +32,18 @@ end
 maybe(m2, "a") do |str|
   puts str # => a
 end
+
+m3 = [1,2,3].to_maybe.map {|i| i * 2}.reject {|i| i > 5}
+
+maybe(m3) do |arr|
+  p arr # => [2, 4]
+end
+
+m4 = "a".to_maybe(NoMethodError).upcase.no_method.gsub(/A/, "B")
+
+maybe(m4) do |str|
+  puts str # => No Execute
+end
 ```
 
 ## Contributing
