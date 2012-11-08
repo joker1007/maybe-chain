@@ -18,7 +18,40 @@ describe MaybeChain do
       subject { string.to_maybe.return_nil.upcase }
       its(:value) { should be_nil }
     end
+
+    context "given block" do
+      let(:string) { [1, 2, 3] }
+
+      subject { string.to_maybe.map {|i| i*2}.reject {|i| i > 5} }
+      its(:value) { should eq [2, 4] }
+    end
+
+    context "method raise Exception" do
+      context "to_maybe given rescuable Exception" do
+        let(:string) { "a".tap {|s| s.extend(MaybeChain::TestMethod)} }
+
+        subject { string.to_maybe(NotImplementedError).raise_no_implement_error.upcase }
+        its(:value) { should be_nil }
+      end
+
+      context "to_maybe given Exception List" do
+        let(:string) { "a".tap {|s| s.extend(MaybeChain::TestMethod)} }
+
+        subject { string.to_maybe([NotImplementedError, ArgumentError]).raise_no_implement_error.upcase }
+        its(:value) { should be_nil }
+      end
+
+      context "to_maybe given Exception List, but different Exception raised" do
+        let(:string) { "a".tap {|s| s.extend(MaybeChain::TestMethod)} }
+
+        it do
+          expect { string.to_maybe([ArgumentError]).raise_no_implement_error.upcase }.to raise_error(NotImplementedError)
+        end
+      end
+    end
   end
+
+  describe
 
   describe "maybe extraction" do
     include Kernel
@@ -51,5 +84,9 @@ end
 module MaybeChain::TestMethod
   def return_nil
     nil
+  end
+
+  def raise_no_implement_error
+    raise NotImplementedError
   end
 end

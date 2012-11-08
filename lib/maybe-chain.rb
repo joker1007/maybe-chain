@@ -4,7 +4,15 @@ require "singleton"
 
 module MaybeChain
   class MaybeWrapper < Delegator
-    def initialize(obj)
+    def initialize(obj, rescuables = [])
+      raise ArgumentError unless (rescuables.is_a?(Class) && rescuables <= Exception) || rescuables.is_a?(Array)
+
+      if rescuables.is_a?(Exception)
+        @rescuables = [rescuables]
+      else
+        @rescuables = rescuables
+      end
+
       if obj.nil?
         @obj = Nothing.instance
       else
@@ -22,10 +30,12 @@ module MaybeChain
       else
         MaybeWrapper.new(super)
       end
+    rescue *@rescuables
+      MaybeWrapper.new(Nothing.instance)
     end
 
     def nothing?
-      @obj.class == MaybeChain::Nothing
+      @obj.is_a? Nothing
     end
 
     def just?
@@ -50,8 +60,8 @@ module MaybeChain
   end
 
   module ObjectExtend
-    def to_maybe
-      MaybeChain::MaybeWrapper.new(self)
+    def to_maybe(rescuables = [])
+      MaybeChain::MaybeWrapper.new(self, rescuables)
     end
   end
 
