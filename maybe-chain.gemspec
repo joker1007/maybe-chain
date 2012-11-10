@@ -16,5 +16,6 @@ Gem::Specification.new do |gem|
   gem.version       = MaybeChain::VERSION
 
   gem.add_development_dependency('rspec', '~>2.11.0')
+  gem.add_development_dependency('rspec-formatter-git_auto_commit')
   gem.add_development_dependency('rake')
 end
