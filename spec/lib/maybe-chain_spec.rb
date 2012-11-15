@@ -62,8 +62,6 @@ describe MaybeChain do
     end
   end
 
-  describe
-
   describe "maybe extraction" do
     context "maybe is just" do
       let(:maybe_obj) { "a".to_maybe.upcase }
@@ -87,6 +85,32 @@ describe MaybeChain do
         end
       end
     end
+  end
+end
+
+describe "#lift" do
+  subject { 1.to_maybe.lift(:+, 2.to_maybe) }
+
+  it { should be_a(MaybeChain::MaybeWrapper) }
+
+  its(:value) { should eq 3 }
+
+  context "given block" do
+    subject { [1, 2, 3].to_maybe.lift(:inject, 0.to_maybe) do |acc, i|
+      acc += i
+    end }
+
+    it { should be_a(MaybeChain::MaybeWrapper) }
+
+    its(:value) { should eq 6 }
+  end
+
+  context "arguments have nothing" do
+    subject { 1.to_maybe.lift(:+, nil.to_maybe) }
+
+    it { should be_a(MaybeChain::MaybeWrapper) }
+
+    its(:value) { should eq nil }
   end
 end
 
