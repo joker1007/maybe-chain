@@ -24,6 +24,14 @@ module MaybeChain
       @obj
     end
 
+    def inspect
+      "<Maybe: #{@obj.inspect}>"
+    end
+
+    def to_s
+      @obj.to_s
+    end
+
     def method_missing(m, *args, &block)
       if nothing?
         self.__getobj__.__send__(m, @rescuables, &block)
@@ -53,6 +61,14 @@ module MaybeChain
 
   class Nothing
     include Singleton
+
+    def inspect
+      "Nothing"
+    end
+
+    def to_s
+      "Nothing"
+    end
 
     def method_missing(method, *args, &block)
       rescuables = args.first || []
