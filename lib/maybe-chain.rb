@@ -13,11 +13,7 @@ module MaybeChain
         @rescuables = rescuables
       end
 
-      if obj.nil?
-        @obj = Nothing.instance
-      else
-        @obj = obj
-      end
+      @obj = obj.nil? ? Nothing.instance : obj
     end
 
     def __getobj__
@@ -39,7 +35,7 @@ module MaybeChain
         MaybeWrapper.new(super, @rescuables)
       end
     rescue *@rescuables
-      MaybeWrapper.new(Nothing.instance, @rescuables)
+      build_nothing
     end
 
     def nothing?
@@ -51,11 +47,22 @@ module MaybeChain
     end
 
     def value
-      if nothing?
-        nil
-      else
-        @obj
-      end
+      nothing? ? nil : @obj
+    end
+
+    def lift(method_name, *args, &block)
+      return build_nothing if nothing?
+      return build_nothing if args.any?(&:nothing?)
+
+      extracts = args.map {|arg| arg.is_a?(MaybeChain::MaybeWrapper) ? arg.value : arg}
+      MaybeWrapper.new(value.__send__(method_name, *extracts, &block), @rescuables)
+    rescue *@rescuables
+      build_nothing
+    end
+
+    private
+    def build_nothing
+      self.class.new(Nothing.instance, @rescuables)
     end
   end
 
