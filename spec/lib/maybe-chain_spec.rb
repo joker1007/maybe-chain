@@ -65,8 +65,6 @@ describe MaybeChain do
   describe
 
   describe "maybe extraction" do
-    include Kernel
-
     context "maybe is just" do
       let(:maybe_obj) { "a".to_maybe.upcase }
       it "execute block" do
