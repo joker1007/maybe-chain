@@ -1,5 +1,5 @@
 # maybe-chain
-
+[![Build Status](https://secure.travis-ci.org/joker1007/maybe-chain.png?branch=master)](https://travis-ci.org/joker1007/maybe-chain)
 ## Installation
 
 Add this line to your application's Gemfile:
